@@ -1,0 +1,18 @@
+system:
+  name: "AI-CEO-Engine"
+  version: "1.0.0"
+  log_level: "INFO"
+
+business:
+  target_monthly_revenue: 10000
+  currency: "USD"
+
+apis:
+  openai: "YOUR_OPENAI_API_KEY"
+  shopify_access_token: ""
+  shopify_store_url: ""
+  youtube_client_secrets_file: "client_secrets.json"
+
+schedule:
+  daily_update_hour: 23 # Run compilation of daily actions at 11 PM
+  shorts_upload_frequency_hours: 12 # Every 12 hours

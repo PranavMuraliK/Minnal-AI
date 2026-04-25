@@ -1,0 +1,100 @@
+# AI-CEO-System (Minnal.ai) Implementation Plan
+
+This document outlines the complete architectural plan and the prerequisites needed to turn the Minnal.ai "AI-CEO-System" from its current stubbed state into a fully functional, autonomous $10,000/month revenue-generating engine.
+
+## User Review Required
+
+> [!WARNING]
+> Please review this plan carefully. Once approved, I will begin implementing these modules and overriding the existing stubs. The system will start taking automated actions once fully configured and connected to your API keys.
+
+## Features & Goals
+- **Objective:** Fully autonomous pipeline for dropshipping product discovery, store management, and YouTube Shorts marketing.
+- **Workflow:** Detect trends -> Add products to Shopify -> Generate Shorts script -> Create voiceover & assemble video -> Upload to YouTube -> Monitor analytics -> Adjust strategy.
+
+## Things Needed For The Project (Prerequisites)
+
+To make this fully operational, you will need the following accounts and credentials ready:
+1. **OpenAI API Key**: For market research, script generation, and strategy adjustment.
+2. **Shopify Custom App Credentials**: `Access Token` and `Store URL` for the `ecom_manager`.
+3. **YouTube Data API v3 Credentials**: `client_secrets.json` for uploading and fetching YouTube analytics.
+4. **Video Assets**: Stock video clips for backgrounds (or a Pexels API key to fetch them automatically).
+5. **Database (Optional initially, but recommended)**: SQLite (local) to keep track of uploaded videos and products.
+
+## Proposed Changes
+
+---
+
+### Core Engine & Dependencies
+
+The orchestrator that runs scheduled jobs and oversees the entire pipeline.
+
+#### [MODIFY] [requirements.txt](file:///c:/Users/prana/OneDrive/Documents/Desktop/Minnal.ai/ai_ceo_system/requirements.txt)
+- Add essential packages: `openai`, `ShopifyAPI`, `google-api-python-client`, `google-auth-oauthlib`, `edge-tts`, `moviepy`, `requests`.
+
+#### [NEW] [main.py](file:///c:/Users/prana/OneDrive/Documents/Desktop/Minnal.ai/ai_ceo_system/core_engine/main.py)
+- A daemon script utilizing the `schedule` library to trigger the market research, video generation, and performance reviews at configured intervals.
+
+---
+
+### Brain (Intelligence & Strategy)
+
+The analytical core of the CEO system.
+
+#### [NEW] [market_researcher.py](file:///c:/Users/prana/OneDrive/Documents/Desktop/Minnal.ai/ai_ceo_system/brain/market_researcher.py)
+- Will connect to OpenAI API, scrape or query recent trends, and select a product niche. It will pass this data to the Ecom Manager and Content Factory.
+
+#### [MODIFY] [strategy_adjuster.py](file:///c:/Users/prana/OneDrive/Documents/Desktop/Minnal.ai/ai_ceo_system/brain/strategy_adjuster.py)
+- Update stubs to read actual analytics data (fetched via YouTube API and Shopify API) instead of hardcoded evaluations.
+
+---
+
+### Content Factory (Marketing)
+
+The automated marketing arm to generate traffic via YouTube Shorts.
+
+#### [NEW] [script_writer.py](file:///c:/Users/prana/OneDrive/Documents/Desktop/Minnal.ai/ai_ceo_system/content_factory/script_writer.py)
+- Uses OpenAI to generate high-retention 30-60 second scripts (Hook, Body, CTA) based on the product selected by the Brain.
+
+#### [MODIFY] [video_generator.py](file:///c:/Users/prana/OneDrive/Documents/Desktop/Minnal.ai/ai_ceo_system/content_factory/video_generator.py)
+- Integrate `edge-tts` for dynamic voiceover generation.
+- Integrate `moviepy` to assemble the audio with a background stock video and render text captions.
+
+#### [NEW] [youtube_uploader.py](file:///c:/Users/prana/OneDrive/Documents/Desktop/Minnal.ai/ai_ceo_system/content_factory/youtube_uploader.py)
+- Implements the OAuth2 flow and video upload logic for YouTube Shorts.
+
+---
+
+### E-com Manager (Sales & Fulfillment)
+
+The module responsible for maintaining the storefront.
+
+#### [MODIFY] [product_lister.py](file:///c:/Users/prana/OneDrive/Documents/Desktop/Minnal.ai/ai_ceo_system/ecom_manager/product_lister.py)
+- Implement actual `ShopifyAPI` calls to automatically create product listings, update descriptions, and manage prices.
+
+---
+
+### Dashboard (Monitoring)
+
+#### [NEW] [app.py](file:///c:/Users/prana/OneDrive/Documents/Desktop/Minnal.ai/ai_ceo_system/dashboard/app.py)
+- A Flask app to serve the frontend. It will read logs from `logs/` and states from the system to give you a real-time "CEO Dashboard" view.
+
+#### [MODIFY] [index.html](file:///c:/Users/prana/OneDrive/Documents/Desktop/Minnal.ai/ai_ceo_system/dashboard/templates/index.html)
+- Ensure the UI matches the premium cinematic web interface designed previously (Deep Navy & Molten Gold).
+
+## Open Questions
+
+> [!NOTE]
+> Please answer these questions to help me tailor the implementation:
+> 1. **Video Backgrounds**: Do you have a folder of generic background videos (e.g., Minecraft parkour, satisfying clips) to use for the Shorts, or should I implement an API integration (like Pexels) to download them dynamically?
+> 2. **AI Model Setup**: Do you have your OpenAI API key ready, or would you prefer to use a local or free alternative for script generation?
+> 3. **TTS Choice**: I plan to use `edge-tts` (free, high quality). Let me know if you prefer ElevenLabs for premium voices (requires an API key).
+
+## Verification Plan
+
+### Automated Tests
+- I will run test executions of individual module functions (e.g., test a single script generation, a mock Shopify listing).
+- Provide a `setup.py` or `.bat` script to verify all API keys are correctly loaded.
+
+### Manual Verification
+- You will need to start the dashboard Flask server and verify the UI looks correct.
+- You will be asked to authenticate YouTube via a browser popup the first time the uploader runs.
